@@ -13,8 +13,13 @@
   //  All registers except   X0, X1, and X2 are preserved
   //
   // Algorithm/Pseudocode:
-  // 1)
+  // 1) Loop through string character by character
+  // 2) If current character is not null-terminator, keep looping through
+  // 3) If current character is null-terminator, break loop
+  // 4) Add 1 to index to count null-terminator and place length in correct returning register X0
+  // 5) Return to calling function
   //*****************************************************************************
+.global String_length
 String_length:
     .EQU STDOUT, 1      // STDOUT
     .EQU SYS_write, 64  // write() system call
@@ -22,19 +27,19 @@ String_length:
 
     .text
     // Set up registers for loop controls
-    MOV X1, #0          // index for stepping through string
+    MOV X1, #0          // index for stepping through string, will become length after loop
 
     // Step through and examine
     loop_start:
     LDRB W2, [X0, X1]   // load character at givenString[baseIndex + index]
-    B.EQ termination    // if character in W2 is null-terminator, then jump to termination
-    ADD X1, X1, #1      // if here then character is not null-terminator, so index++
-    B loop_start        // and then reloop to exmaine next character
-
+    CMP W2, #0          // compare current character to null-terminator
+    B.EQ termination    // IF character in W2 is null-terminator, then jump to termination
+    ADD X1, X1, #1      // ELSE character is not null-terminator, so index++
+    B loop_start        // and then reloop to examine next character
 
     termination:
     // First setup X0 with correct return value for string length
-    ADD X0, X1, #1      // add one to index to get string length and store in correct register
+    ADD X0, X1, #1      // add one to index to get string length with null-terminator and store in returning register
     RET                 // return back to location where this function was called  
 
     .data
