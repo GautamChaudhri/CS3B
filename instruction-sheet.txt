@@ -1,0 +1,38 @@
+- ARM64 Instructions 
+
+MOV                             overwrite whole register
+MOVK | move keep                overwrites PARTIAL register
+MOVN | move not                 inverts the value before loading into register
+
+
+
+LSL | logical shift left        move bits left
+LSR | logical shift right       move bits right
+ASR | arithmetic shift right    move bits right and retain sign
+ROR | rotate right              move bits right and fallen off bits loop back to left side
+
+Math
+ADD                             add two registers
+ADDS                            add and set flags
+SUB                             subtract
+SUBS                            subtract and set flags
+SDIV                
+MUL
+
+Branch
+B                               unconditional jump
+BL                              branch with link
+CBZ                             compare register with 0 and jump if = 0
+CBNZ                            compare register with 0 and jump if != 0
+RET                             return to address stored in LR/X30
+
+Load/Store 
+LDR                             load register
+LDRB                            load single byte 
+LDRH
+LDRSB
+LDRSH
+
+
+- GDB Commands
+
