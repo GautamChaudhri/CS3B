@@ -4,35 +4,132 @@ MOV                             overwrite whole register
 MOVK | move keep                overwrites PARTIAL register
 MOVN | move not                 inverts the value before loading into register
 
-
-
 LSL | logical shift left        move bits left
 LSR | logical shift right       move bits right
 ASR | arithmetic shift right    move bits right and retain sign
 ROR | rotate right              move bits right and fallen off bits loop back to left side
+UXTB | unsigned extend byte     extract byte, zero-extend to register
+UXTH | unsigned extend halfword 
+UXTW | unsigned extend word     
+SXTB | signed extend byte       extract byte, sign-extend to register
+SXTH | signed extend halfword   
+SXTW | signed extend word       
 
-Math
 ADD                             add two registers
 ADDS                            add and set flags
 SUB                             subtract
 SUBS                            subtract and set flags
-SDIV                
-MUL
+SDIV                            signed division
+UDIV                            unsigned divison
+MUL                             multiply
+CMP                             compare (Xn - Operand2, sets flags only)
 
-Branch
-B                               unconditional jump
-BL                              branch with link
-CBZ                             compare register with 0 and jump if = 0
-CBNZ                            compare register with 0 and jump if != 0
-RET                             return to address stored in LR/X30
 
-Load/Store 
+**** Load/Store ****
 LDR                             load register
 LDRB                            load single byte 
-LDRH
-LDRSB
-LDRSH
+LDRH                            load halfword
+LDRSB                           load signed byte
+LDRSH                           load signed halfword
+STR                             store register
+STRB                            store byte
 
 
-- GDB Commands
+**** Branch ****
+B                               unconditional jump
+BL                              branch with link
+  EQ | equal                    branch if (Z set)
+  NE | not equal                branch if (Z clear)
+  MI | minus                    branch if negative (N set)
+  PL | plus                     branch if positive (N clear)
+  VS | v set                    branch if overflow occurred (V set)
+  VC | v clear                  branch if no overflow (V clear)
 
+  GE | >=                       branch when (N and V same)
+  LT | <                        branch when(N and V differ)
+  GT | >                        branch when (Z clear, N and V same)
+  LE | <=                       branch when (Z set, N and V differ)
+  AL | always
+
+CBZ                             jump if register = 0
+CBNZ                            jump if register != 0
+RET                             return to address stored in LR/X30
+
+
+**** System ****
+SVC                             supervisor call (system call)
+NOP                             no operation
+
+
+**** Linux System Calls (ARM64) ****
+X8 = system call number, X0-X5 = arguments, X0 = return value
+
+93                              exit (X0 = exit code)
+64                              write (X0 = fd, X1 = buf, X2 = count)
+63                              read
+1                               write (alternative)
+
+
+**** GDB Commands ****
+x/[count][format][size] address
+
+formats: 
+  x = hex
+  d = signed decimal
+  u = unsigned decimal
+  t = binary
+  i = instruction
+  c = char
+  s = string (null-terminated)
+  
+sizes:
+  b = byte (1 byte)
+  h = halfword (2 bytes)
+  w = word (4 bytes)
+  g = giant/quad (8 bytes)
+
+examples:
+  x/1ub &bA           1 byte unsigned decimal
+  x/1cb &chInit       1 byte as char
+  x/1uh &u16Hi        1 halfword unsigned decimal
+  x/1dw &wAlt         1 word signed decimal
+  x/1dw &wAlt+4       1 word at offset +4 bytes
+  x/1xg &dbBig        1 quad in hex
+  x/s &szMsg1         string
+  x/4xb &var          4 bytes in hex
+  x/8i $pc            8 instructions at program counter
+
+&variable                       get address of variable
+$register                       get contents of register
+
+
+
+**** Breakpoints ****
+break location (b)              set breakpoint
+info break (i b)                list breakpoints
+delete n (d n)                  delete breakpoint n
+delete                          delete all breakpoints
+
+**** Execution ****
+continue (c)                    continue execution
+step (s)                        step one line
+stepi (si)                      step one instruction
+next (n)                        step over function
+nexti (ni)                      next instruction
+
+**** Viewing Code ****
+list (l)                        list source code
+disassemble (disas)             show assembly
+
+**** Examining Data ****
+info registers (i r)            show all registers
+info register x0                show specific register
+info variables                  list variables
+print $x0 (p)                   print register value
+print/x $x0                     print in hex
+print/t $x0                     print in binary
+print/d $x0                     print in decimal
+
+**** Display ****
+display $x0                     auto-display after each step
+undisplay n                     stop auto-displaying

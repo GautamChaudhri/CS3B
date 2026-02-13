@@ -1,14 +1,16 @@
-TARGET = lab5-1.out
-SRC = lab5-1.s
+PROGRAM = lab5-1
+SRC = $(PROGRAM).s
+OBJ = $(PROGRAM).o
+TARGET = $(PROGRAM).out
 
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-	as -g -o $(TARGET).o $(SRC)
-	ld -o $(TARGET) $(TARGET).o
+	as -g -o $(OBJ) $(SRC)
+	ld -o $(TARGET) $(OBJ)
 
 clean:
-	rm -f $(TARGET) $(TARGET).o
+	rm -f $(TARGET) $(OBJ)
 
 run: $(TARGET)
 	./$(TARGET)
