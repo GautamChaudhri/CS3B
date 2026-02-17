@@ -34,6 +34,22 @@ LDRSH                           load signed halfword
 STR                             store register
 STRB                            store byte
 
+examples:
+  LDR X0, =myVar                load address of myVar into X0
+  LDR X1, [X0]                  load 8 bytes from address in X0 into X1
+  LDR X1, [X0, #8]              load from X0 + 8 bytes offset
+  LDR X1, [X0, X2]              load from X0 + X2 (register offset)
+  LDRB W1, [X0]                 load 1 byte from address in X0
+  LDRB W1, [X0, #3]             load 1 byte from X0 + 3
+
+  STR X1, [X0]                  store 8 bytes from X1 to address in X0
+  STR X1, [X0, #8]              store to X0 + 8 bytes offset
+  STRB W1, [X0]                 store 1 byte from W1 to address in X0
+  STRB W1, [X0, X2]             store 1 byte to X0 + X2 (register offset)
+
+  LDR X1, [X0], #8              post-index: load from X0, then X0 += 8
+  LDR X1, [X0, #8]!             pre-index: X0 += 8, then load from X0
+
 
 **** Branch ****
 B                               unconditional jump
