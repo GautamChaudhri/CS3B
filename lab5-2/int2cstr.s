@@ -46,23 +46,27 @@ int2cstr:
   CBNZ X3, calcLength   // re loop if integerCopy != 0
 
   CMP X0, #0            // check if givenInteger is negative
-  B.PL extraction       // IF givenInteger < 0
-  ADD X2, X2, #1        // THEN length++ to count for - sign
-  MOV X7, #45           // Load X7 with ascii for -
+  B.PL negatePos        // IF givenInteger > 0, then jump and deal with it
+  MOV X7, #45           // ELSE, it is negative, so load X7 with ascii for -
   STRB W7, [X1, X2]     // array[lastIndex] = '-'
+  ADD X2, X2, #1        // length++ to count for - sign
+  B extraction          // jump to extraction step
 
+negatePos:              // IF positive
+  NEG X0, X0            // THEN negate integer
 
   // Extract each integer and store in array
-  extraction:
+extraction:
   MOV X3, X0            // copy integer value so we dont lose the original
   MOV X8, #1            // tracks index for remainder array, starting at 1 to skip null terminator
   MOV X7, #0            // store null terminator in X7
   STRB W7, [X1]         // array[0] = '\0'
 
-  extractLoop:
+extractLoop:
   SDIV X5, X3, X4       // quotient = integerCopy / 10
   MUL X6, X5, X4        // X6 = quotient * 10
   SUB X7, X3, X6        // remainder (X7) = givenInteger - X6
+  NEG W7, W7            // negate remainder so it is positive
 
   ADD X7, X7, #48       // convert remainder into its corresponding ascii value
   STRB W7, [X1, X8]     // array[baseIndex + index] = remainder in ascii
@@ -77,7 +81,7 @@ int2cstr:
   ADD X8, X1, X2        // pointer to array[length], *this is one past the last valid index*
   SUB X8, X8, #1        // end pointer pointing at array[lastValidIndex]
 
-  swapLoop:
+swapLoop:
   LDRB W6, [X5]         // load character from beginning of array
   LDRB W7, [X8]         // load character from end of array
   STRB W6, [X8]         // array[end] = character from start of array
