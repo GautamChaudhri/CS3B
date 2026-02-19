@@ -40,7 +40,7 @@ int2cstr:
   MOV X3, X0            // copy integer value so we dont lose the original
   MOV X4, #10           // X4 = divisor = 10
   
-  calcLength:
+calcLength:
   SDIV X3, X3, X4       // integerCopy /= 10
   ADD X2, X2, #1        // length++
   CBNZ X3, calcLength   // re loop if integerCopy != 0
