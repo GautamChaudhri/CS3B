@@ -87,6 +87,7 @@ X8 = system call number, X0-X5 = arguments, X0 = return value
 
 
 **** GDB Commands ****
+[ADD PRINT COMMAND]
 x/[count][format][size] address
 
 formats: 

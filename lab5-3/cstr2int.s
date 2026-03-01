@@ -18,60 +18,64 @@
 // 2) Multiply accumulator by 10 and add new integer value
 //*****************************************************************************
 
-.global _start
-_start:
+.global cstr2int
+cstr2int:
   .EQU STDOUT, 1      // STDOUT
   .EQU SYS_write, 64  // write() system call
   .EQU SYS_exit, 93   // exit() system call
 
   .text
-  // Basic setup
-  MOV X1, #0                // set up accumulator
-  MOV X8, =negOverflowThreshold   // set up value to compare against to check mult overflow
-  MOV X7, =posOverflowThreshold
+  // Initial Setup
+  MOV X1, #0                    // set up accumulator
+  LDR X7, =overflowThreshold
+  LDR X8, [X7]   // set up value to compare against to check mult overflow
 
   // Check if cstring contains negative number and set flag accordingly
-  MOV X6, #0          // X7 = flag for if integer is negative or positive. 0 = pos, 1 = neg
-  LDRB W2, [X0]       // grab first char
-  CMP W2, #45         // compare char with '-'
-  B.NE loop           // IF W2 == '-'
-  MOV X6, #1          // THEN given integer is negative so set flag
-  ADD X0, X0, #1      // also advance pointer so the loop grabs the first integer char and not '-'
-
+  MOV X7, #0            // X7 = flag for if integer is negative or positive. 0 = pos, 1 = neg
+  LDRB W2, [X0]         // grab first char
+  CMP X2, #'-'          // compare char with '-'
+  B.NE loop             // IF W2 == '-'
+  MOV X7, #1            // THEN given integer is negative so set flag
+  ADD X0, X0, #1        // also advance pointer so the loop grabs the first integer char and not '-'
 
 loop:
   // Grab char and exit when it is null
   LDRB W2, [X0], #1   // W2 = cstring[index++], grab chars
-  CBZ W2, loopExit    // if char == null terminator, then exit loop
+  CBZ X2, loopExit    // if char == null terminator, then exit loop
 
   // Convert char to negative integer
-  SUB W2, W2, #48     // convert char into its integer value
-  NEG W2, W2          // negate b/c we are using negative loop
+  SUB X2, X2, #48     // convert char into its integer value
+  NEG X2, X2          // negate b/c we are using negative loop
 
   // Check MUL overflow
-  CMP X8, X1          // compare negativeCmpVal with current accumulator
-  B.GE mulOverflow    // IF negativeCmpVal < current accumlator THEN overflow will happen
+  CMP X8, X1          // compare overflowThreshold with current accumulator
+  B.GE mulOverflow    // IF overflowThreshold < current accumlator THEN overflow will happen
 
   // Update accumlator
-  MUL X1, X1, #10     // accumulator *= 10
+  MOV X6, #10         // load imm value 10
+  MUL X1, X1, X6      // accumulator *= 10
   ADD X1, X1, X2      // accumulator += current integer
   B loop              // reloop
 
 loopExit:
-  CBNZ X8, termination       // IF X8 Flag indicates positive value
-  NEG X1, X1          // THEN negate accumulator so it becomes positive
+  // Check negative flag
+  CBNZ X7, termination  // IF X7 flag indicates positive value (0)
+  NEG X1, X1            // THEN negate accumulator so it becomes positive
 
 termination:
+  // Move result into X0 and return
+  MOV X0, X1
   RET
 
 mulOverflow:
+  // Replace result with 0
+  MOV X1, #0
 
-  // Prepare to terminate
-  MOV X0, #0          // use 0 for return code success
-  MOV X8, #SYS_exit   // service code to exit
-  SVC 0               // call linux to exit 
+  // Manually set overflow flag
+  MOV X3, #-1
+  MOV X4, X3, LSR #1
+  ADD X5, X4, X4
+  B termination
 
   .data
-negativeCmpVal: .asciz "-922337203685477580"  // value to compare against to check mult overflow
-negOverflowThreshold: .quad #-922337203685477580 // equal to most negative value / 10
-posOverflowThreshold  .quad #922337203685477580 // equal to most positive value / 10
+overflowThreshold: .quad -922337203685477580 // equal to most negative value / 10

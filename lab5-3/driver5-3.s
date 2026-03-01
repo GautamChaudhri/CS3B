@@ -18,131 +18,120 @@ _start:
 
   .text
 
-  // ----- test1: "99" -----
-  LDR X0, =test1          // load X0 with pointer to test string "99"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 99
+  LDR X0, =test1            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test2: "123456789" -----
-  LDR X0, =test2          // load X0 with pointer to test string "123456789"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 123456789
+  LDR X0, =test2            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test3: "1" -----
-  LDR X0, =test3          // load X0 with pointer to test string "1"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 1
+  LDR X0, =test3            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test4: "-1111" -----
-  LDR X0, =test4          // load X0 with pointer to test string "-1111"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = -1111
+  LDR X0, =test4            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test5: "0" -----
-  LDR X0, =test5          // load X0 with pointer to test string "0"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 0
+  LDR X0, =test5            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test6: "-9223372036854775808" (INT64_MIN, valid) -----
-  LDR X0, =test6          // load X0 with pointer to test string "-9223372036854775808"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = -9223372036854775808
+  LDR X0, =test6            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test7: "-9223372036854775809" (should overflow) -----
-  LDR X0, =test7          // load X0 with pointer to test string "-9223372036854775809"
-  BL cstr2int             // call cstr2int; overflow -> returns 0 in X1
-  MOV X0, X1              // move integer result (0) into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = -9223372036854775809 | OVERFLOW
+  LDR X0, =test7            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test8: "9223372036854775807" (INT64_MAX, valid) -----
-  LDR X0, =test8          // load X0 with pointer to test string "9223372036854775807"
-  BL cstr2int             // call cstr2int; integer result returned in X1
-  MOV X0, X1              // move integer result into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 9223372036854775807
+  LDR X0, =test8            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test9: "9223372036854775808" (should overflow) -----
-  LDR X0, =test9          // load X0 with pointer to test string "9223372036854775808"
-  BL cstr2int             // call cstr2int; overflow -> returns 0 in X1
-  MOV X0, X1              // move integer result (0) into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 9223372036854775808 | OVERFLOW
+  LDR X0, =test9            // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test10: "9223372036854775809" (should overflow) -----
-  LDR X0, =test10         // load X0 with pointer to test string "9223372036854775809"
-  BL cstr2int             // call cstr2int; overflow -> returns 0 in X1
-  MOV X0, X1              // move integer result (0) into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 9223372036854775809 | OVERFLOW
+  LDR X0, =test10           // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- test11: "999999999999999999999" (should overflow) -----
-  LDR X0, =test11         // load X0 with pointer to test string "999999999999999999999"
-  BL cstr2int             // call cstr2int; overflow -> returns 0 in X1
-  MOV X0, X1              // move integer result (0) into X0 for int2cstr
-  LDR X1, =szStrBuffer    // load X1 with pointer to output string buffer
-  BL int2cstr             // convert integer in X0 to c-string at X1
-  LDR X0, =szStrBuffer    // load X0 with pointer to output string buffer for printing
-  BL putstring            // print the converted c-string
-  LDR X0, =szEOL          // load X0 with pointer to newline string
-  BL putstring            // print newline
+  // test = 999999999999999999999 | OVERFLOW
+  LDR X0, =test11           // load X0 with pointer to input string
+  BL cstr2int               // call cstr2int, result in X0
+  LDR X1, =szStrBuffer      // load X1 with pointer to string buffer
+  BL int2cstr               // convert integer back to string
+  LDR X0, =szStrBuffer      // load X0 with pointer to string buffer
+  BL putstring              // call putstring to output converted value
+  LDR X0, =szEOL            // load X0 with pointer to EOL
+  BL putstring              // call putstring to output newline
 
-  // ----- terminate program -----
-  MOV X0, #0              // set return code to 0 (success)
-  MOV X8, #SYS_exit       // load syscall number for exit()
-  SVC 0                   // call Linux to terminate the program
+  // terminate
+  MOV X0, #0                // set return code to 0 (success)
+  MOV X8, #SYS_exit         // load syscall number for exit()
+  SVC 0                     // call Linux to terminate the program
 
 
   .data
