@@ -26,7 +26,7 @@ $(OBJ_FUNC3): $(SRC_FUNC3)
 	as -g -o $(OBJ_FUNC3) $(SRC_FUNC3)
 
 clean:
-	rm -f $(TARGET) $(OBJ)
+	rm -f *.o *.out
 
 run: $(TARGET)
 	./$(TARGET)

@@ -18,13 +18,12 @@
   // 0) Divide integer by 10 in a loop repeatedly until it becomes 0. Take the 
   //    amount of loops and add 2 if negative or 1 if positive. This becomes the length 
   //    of our c-string.
-  // 1) Divide integer by 10. 
-  // 2) Recreate remainder by finding difference between integer and the quotient * 10
-  // 3) Add 48 to remainder to get ascii and store in array. Overwrite integer with quotient.
-  // 4) Repeat steps 1-2 in a loop until integer becomes 0.
-  // 5) Set up two pointers, pointing to the first and last elements of the remainder
+  // 1) Divide integer by 10 and recreate remainder.
+  // 2) Add 48 to remainder to get ascii and store in array. Overwrite integer with quotient.
+  // 3) Repeat steps 1-2 in a loop until integer becomes 0.
+  // 4) Set up two pointers, pointing to the first and last elements of the remainder
   //    array.
-  // 6) Swap first and last elements and march pointers towards each other until
+  // 5) Swap first and last elements and march pointers towards each other until
   //    everything is swapped.
   //*****************************************************************************
 
