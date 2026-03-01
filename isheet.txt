@@ -87,10 +87,11 @@ X8 = system call number, X0-X5 = arguments, X0 = return value
 
 
 **** GDB Commands ****
-[ADD PRINT COMMAND]
+p/d $x#                 prints register in decimal
+
 x/[count][format][size] address
 
-formats: 
+format: 
   x = hex
   d = signed decimal
   u = unsigned decimal
@@ -99,7 +100,7 @@ formats:
   c = char
   s = string (null-terminated)
   
-sizes:
+size:
   b = byte (1 byte)
   h = halfword (2 bytes)
   w = word (4 bytes)

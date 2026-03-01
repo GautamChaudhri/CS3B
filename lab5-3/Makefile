@@ -1,9 +1,9 @@
 TARGET     = lab5-3.out
 SRC_MAIN   = driver5-3.s
 SRC_FUNC1  = cstr2int.s
-SRC_FUNC2  = ../lab5-2/int2cstr.s
-SRC_FUNC3  = ../lab5-2/putstring.s
-SRC_FUNC4  = ../lab5-2/String_length.s
+SRC_FUNC2  = int2cstr.s
+SRC_FUNC3  = putstring.s
+SRC_FUNC4  = String_length.s
 OBJ_MAIN   = driver5-3.o
 OBJ_FUNC1  = cstr2int.o
 OBJ_FUNC2  = int2cstr.o

@@ -3,11 +3,8 @@
 // Feb 19, 2026
 // lab5-3 - driver
 //
-// Tests cstr2int with 11 test values. For each test:
-//   1) Load X0 with pointer to input string
-//   2) Call cstr2int -> result lands in X1
-//   3) Move result to X0, load X1 with buffer, call int2cstr to convert back
-//   4) Print the resulting string followed by a newline
+// Passes all 11 test cases to cstr2int and outputs the results as a strings to 
+// console.
 //*****************************************************************************
 
 .global _start
@@ -17,7 +14,6 @@ _start:
   .EQU SYS_exit, 93   // Linux syscall number for exit()
 
   .text
-
   // test = 99
   LDR X0, =test1            // load X0 with pointer to input string
   BL cstr2int               // call cstr2int, result in X0
@@ -67,7 +63,7 @@ _start:
   BL putstring              // call putstring to output converted value
   LDR X0, =szEOL            // load X0 with pointer to EOL
   BL putstring              // call putstring to output newline
-
+  
   // test = -9223372036854775808
   LDR X0, =test6            // load X0 with pointer to input string
   BL cstr2int               // call cstr2int, result in X0
