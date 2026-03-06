@@ -42,7 +42,7 @@ _start:
   // Add null terminator to string
   LDR X1, =szBuffer     // get base address for string
   ADD X1, X1, 10        // move pointer to end of string
-  MOV X2, #'\0'         // get null terminator
+  MOV X2, #0         // get null terminator
   STRB W2, [X1]         // place null terminator at end of string
 
   // Output preamble to STDOUT
