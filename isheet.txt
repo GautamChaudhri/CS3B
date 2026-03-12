@@ -85,6 +85,12 @@ X8 = system call number, X0-X5 = arguments, X0 = return value
 63                              read
 1                               write (alternative)
 
+**** Library/Archive ****
+Create Archive  : ar -v -q lib.a *.o
+List Archive    : ar -v -t lib.a
+Add/replace file: ar -v -r lib.a cstr2int.o
+Delete file     : ar -v -d lib.a cstr2int.o
+
 
 **** GDB Commands ****
 p/d $x#                 prints register in decimal
