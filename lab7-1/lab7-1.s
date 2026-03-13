@@ -2,9 +2,22 @@
 // Gautam Chaudhri
 // Mar 12, 2026
 // lab7-1 - puddy tat
+// Copies two input files to an output file.
 //
 // Algorithm/Pseudocode:
-// 1)
+// 1) Accept input file names and immediately open each one. Save their file
+//    descriptor values to registers so no need to keep track of names.
+//      * if error occurs when opening then handle it
+// 2) Accept output file name and append choice. 
+// 3) Evaluate append choice, then start accumlating appropriate flags based
+//    on user choice. 
+// 4) Open output file with appropriate flags. Save file descriptor so file
+//    name is no longer needed.
+//      * handle errors if they occur
+// 5) In a loop, repeatedly read from input file and write to output file.
+//    Stop looping when number of characters read < copy buffer size. 
+//    Repeat this step for second input file as well.
+// 6) Close all 3 files then terminate.
 //*****************************************************************************
 
 .global _start
@@ -63,7 +76,7 @@ _start:
 .macro COPY_FILE inFile_fd, outFile_fd
 copyLoop_\@:              // \@ = macro counter, used by GAS to generate unique labels
   MOV X0, \inFile_fd      // load input file fd
-  LDR X1, =szCopyBuf      // load copy buffer to hold data
+  LDR X1, =bCopyBuf       // load copy buffer to hold data
   MOV X2, #COPY_BUF_SIZE  // max bytes to read
   MOV X8, #SYS_read       // service code for read
   SVC 0                   // call OS to read
@@ -71,7 +84,7 @@ copyLoop_\@:              // \@ = macro counter, used by GAS to generate unique 
   MOV X7, X0              // save number of char read
 
   MOV X0, \outFile_fd     // load output file fd
-  LDR X1, =szCopyBuf      // load copy buffer to hold data
+  LDR X1, =bCopyBuf       // load copy buffer to hold data
   MOV X2, X7              // max bytes to write = number of char read
   MOV X8, #SYS_write      // service code for write
   SVC 0                   // call OS to read
@@ -99,8 +112,8 @@ copyLoop_\@:              // \@ = macro counter, used by GAS to generate unique 
   OPEN_FILE szInFilenameBuf, X2, X5, inputFileError  // open file and save fd to X5 if it exists
 
   // Get output file name and append choice
-  GET_PROMPT_INPUT szOutFilePrompt, szOutFilenameBuf       // get output file name
-  GET_PROMPT_INPUT szAppendPrompt, szInFilenameBuf         // get append choice, store in InFilenameBuf
+  GET_PROMPT_INPUT szOutFilePrompt, szOutFilenameBuf  // get output file name
+  GET_PROMPT_INPUT szAppendPrompt, szInFilenameBuf    // get append choice, store in InFilenameBuf
 
   // Evaluate append choice
   LDRB W0, [X0]       // extract append choice from buffer
@@ -140,11 +153,12 @@ outputFileError:
   OUTPUT_ERROR szOutFileError, szOutFilenameBuf   // display output file error
   B terminate                                     // jump to terminate
 
+
   .data
 // Buffers
 szInFilenameBuf:  .skip     FILENAME_BUFFER_SIZE
 szOutFilenameBuf: .skip     FILENAME_BUFFER_SIZE
-szCopyBuf:        .skip     COPY_BUF_SIZE
+bCopyBuf:        .skip     COPY_BUF_SIZE
 
 // Prompts
 szFilePrompt_1:   .asciz    "Enter first input file name : "
