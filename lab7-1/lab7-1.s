@@ -128,8 +128,8 @@ appendMode:
 
 next: 
   // Prepare flags and open output file
-  ADD X2, X2, #O_WRONLY
-  ADD X2, X2, #O_CREAT
+  ADD X2, X2, #O_WRONLY   // add write only flag
+  ADD X2, X2, #O_CREAT    // add create file flag
   OPEN_FILE szOutFilenameBuf, X2, X6, outputFileError  // open output file and save fd to X6
 
   // Copy input files to output file
