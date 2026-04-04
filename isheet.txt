@@ -136,10 +136,14 @@ delete                          delete all breakpoints
 
 **** Execution ****
 continue (c)                    continue execution
-step (s)                        step one line
-stepi (si)                      step one instruction
-next (n)                        step over function
-nexti (ni)                      next instruction
+step (s)                        step one line (into functions)
+stepi (si)                      step one instruction (into functions)
+next (n)                        step one line (over functions)
+nexti (ni)                      next instruction (over functions)
+finish (fin)                    run until current function returns
+until (u)                       run until next line (exits loops forward)
+until *0x<addr>                 run until specific address
+advance *0x<addr>               like until, but works across functions
 
 **** Viewing Code ****
 list (l)                        list source code
