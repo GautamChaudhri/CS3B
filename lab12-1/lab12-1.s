@@ -4,7 +4,8 @@
 // lab12-1 - And your point is
 //
 // Algorithm/Pseudocode:
-// 1) 
+// 1) Load all 6 variables into floating point registers.
+// 2) Carry out the 3 computations and place their values into correct registers.
 //*****************************************************************************
 
 .global _start
