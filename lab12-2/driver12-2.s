@@ -4,7 +4,9 @@
 // lab12-2 - driver to test cstr2dfp
 //
 // Algorithm/Pseudocode:
-// 1)
+// 1) Load test buffer into X0 and call cstr2dfp
+// 2) Load formatting parameters into X0 and call printf to print to console
+// 3) Repeat for all test cases
 //*****************************************************************************
 
 .global main
@@ -69,7 +71,8 @@ main:
   BL printf             // call printf
 
   // Prepare to terminate
-  LDR LR, [SP], #16    // restore LR
+  LDR LR, [SP], #16     // restore LR
+  MOV X0, XZR           // exit code indicating success
   RET
 
   .data

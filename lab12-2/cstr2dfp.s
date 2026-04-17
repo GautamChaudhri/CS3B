@@ -14,11 +14,25 @@
 // Registers X0 - X8 are modified and not preserved
 //*****************************************************************************
 // Algorithm/Pseudocode:
-// 1) In a loop, scan through buffer until decimal is discovered.
-//    * if decimal is discovered, then overwrite with null terminator and feed
-//      buffer to cstr2int function to extract whole number and convert to int
-//    * if no decimal is discovered, then no fractional part. Use cstr2int to
-//      convert to integer and then convert and store in D0 and terminate
+// 1) Check first element for '-'. If found, set negative flag and advance pointer
+//    to next element
+// 2) In a loop, scan through buffer until decimal is discovered
+//    * if decimal is discovered, then overwrite with null terminator
+//    * if no decimal is discovered, then no fractional part, jump to special
+//      handling
+// 3) Feed modified buffer from first index to cstr2int to convert whole number 
+//    part to integer. Then convert and store in D register
+// 4) Feed modified buffer from first index after decimal point to String_length
+//    to get length of fractional part
+// 5) Build power of 10 divisor based on length of fractional part (e.g. if length
+//    is 3, then divisor = 1000)
+// 6) Feed modified buffer from first index after decimal point to cstr2int
+//    to convert fractional part to integer
+// 7) Convert and store fractional part in D register, then divide by divisor
+//    and add to D register with whole number part.
+// 8) Negate final answer based on negative flag
+// 9) Special Case: if special case discovered in step 2, then only do step 3
+//    and terminate
 //*****************************************************************************
 
 .global cstr2dfp
@@ -32,7 +46,7 @@ cstr2dfp:
   // Handle negative values manually
   MOV X11, XZR        // flag, set to 0 if positive, 1 if negative
   LDRB W1, [X0]       // grab first element
-  CMP X1, #45         // compare element with '-'
+  CMP X1, #'-'         // compare element with '-'
   B.NE findDecimal    // IF element != '-', then jump to next section
   MOV X11, #1         // ELSE element == '-', set flag
   ADD X0, X0, #1      // index++
@@ -79,6 +93,8 @@ power10Exit:
   SCVTF D2, X0        // convert decimal part from integer into double
   FDIV D1, D2, D1     // decimal part as integer / correct power of 10 | this gets original fractional part as double
   FADD D0, D0, D1     // add valid fractional part to whole number part
+  MOV X1, #'.'        // load '.'
+  STRB W1, [X10, #-1] // restore decimal point to buffer
   CBNZ X11, negate    // IF negative flag set, then deal with it
   B terminate         // ELSE jump to termination
 
@@ -99,6 +115,6 @@ negate:
 terminate:
   LDP X11, LR, [SP], #16  // restore X11 and LR
   LDP X9, X10, [SP], #16  // restore X9 and X10
-  RET
+  RET                     // return
 
   .data
