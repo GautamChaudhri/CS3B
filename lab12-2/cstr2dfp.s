@@ -41,7 +41,7 @@ cstr2dfp:
 findDecimal:
   MOV X9, X0          // first save buffer start
 findDecimalLoop:
-  LDRB W1, [X0]        // load current element
+  LDRB W1, [X0]       // load current element
   CMP X1, #'.'        // compare element with '.'
   B.EQ findDecimalExit  // IF element == '.', then exit loop
   CBZ X1, noDecimalExit // ELSE IF element == null terminator, then exit to special case
@@ -91,8 +91,10 @@ noDecimalExit:
   B terminate         // ELSE jump to termination
 
 negate:
-  FNEG D0, D0         // negate D0 to make it negative
-  B terminate         // ELSE jump to termination
+  FCMP D0, #0.0       // compare D0 with 0.0
+  B.EQ terminate      // IF D0 == 0.0, then dont negate
+  FNEG D0, D0         // ELSE negate D0 to make it negative
+  B terminate         // jump to termination
 
 terminate:
   LDP X11, LR, [SP], #16  // restore X11 and LR

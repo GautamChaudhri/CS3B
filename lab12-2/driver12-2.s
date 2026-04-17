@@ -1,7 +1,7 @@
 //*****************************************************************************
 // Gautam Chaudhri
 // Apr 15, 2026
-// lab
+// lab12-2 - driver to test cstr2dfp
 //
 // Algorithm/Pseudocode:
 // 1)
